@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<title>Pension Net vs Gross</title>
+<style>
+@font-face{font-family:Heebo;src:url(fonts/heebo-hebrew.woff2) format('woff2');font-weight:100 900;
+  unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;}
+@font-face{font-family:Heebo;src:url(fonts/heebo-latin.woff2) format('woff2');font-weight:100 900;
+  unicode-range:U+0000-00FF,U+2000-206F,U+2212;}
+
+:root{
+  --desk:#ECE6DC; --paper:#FBFAF7; --ink:#1D2939; --blue:#456A8E; --blue-soft:#8FA7BF;
+  --slate:#4D5B6B; --line:#D9D4CB; --shadow:rgba(64,52,38,.30);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--desk)}
+body{font-family:Heebo,sans-serif;-webkit-font-smoothing:antialiased}
+
+#stage{position:absolute;inset:0;overflow:hidden}
+#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;will-change:transform,filter}
+.obj{position:absolute;transform-origin:50% 50%}
+
+/* ---------- desk ---------- */
+#desk{position:absolute;left:-1400px;top:-1600px;width:4000px;height:5200px;
+  background:
+    radial-gradient(1400px 1100px at 62% 38%, rgba(255,252,246,.85), rgba(255,252,246,0) 70%),
+    radial-gradient(1800px 1400px at 30% 70%, rgba(222,213,200,.55), rgba(222,213,200,0) 70%),
+    linear-gradient(160deg,#F1ECE4 0%,#E8E1D6 55%,#E2DACD 100%);}
+#desk::after{content:"";position:absolute;inset:0;opacity:.07;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .2  0 0 0 1 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");}
+
+/* ---------- paper ---------- */
+.paper{background:var(--paper);border-radius:6px;padding:34px 34px;
+  box-shadow:0 28px 50px -22px var(--shadow),0 6px 14px rgba(64,52,38,.10),inset 0 0 0 1px rgba(0,0,0,.03)}
+.bar{height:12px;border-radius:6px;background:var(--line);margin:0 0 15px 0}
+.bar.dark{background:#B9C3CE}
+.bar.thick{height:20px}
+.hdr{height:64px;border-radius:4px;margin-bottom:28px;display:flex;align-items:center;gap:14px;padding:0 18px;flex-direction:row-reverse}
+.hdr i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.75)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 22px}
+.cell{border:2px solid #E2DDD5;border-radius:6px;height:62px;padding:14px}
+.cell .bar{margin:0;width:70%;margin-inline-start:auto}
+.row{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-direction:row-reverse}
+.box{width:24px;height:24px;border:2.5px solid #B7C1CC;border-radius:4px;flex:none}
+.box.on{background:var(--blue-soft);border-color:var(--blue-soft)}
+.stamp{width:110px;height:110px;border-radius:50%;border:4px solid rgba(69,106,142,.35);position:absolute;left:40px;bottom:46px;transform:rotate(-14deg)}
+.stamp::after{content:"";position:absolute;inset:14px;border-radius:50%;border:2px solid rgba(69,106,142,.25)}
+.sig{position:absolute;left:34px;right:34px;bottom:60px;height:2px;background:#CBD3DB}
+.tbl .r{display:flex;gap:14px;padding:12px 10px;border-radius:4px;flex-direction:row-reverse}
+.tbl .r:nth-child(odd){background:#F2F0EB}
+.tbl .r i{display:block;height:11px;border-radius:6px;background:#D4CEC4}
+
+/* ---------- calculator ---------- */
+#calc{width:380px;height:580px;border-radius:40px;padding:34px 30px;
+  background:linear-gradient(170deg,#FAF8F5 0%,#ECE8E1 60%,#E3DED6 100%);
+  box-shadow:0 50px 80px -30px rgba(52,42,30,.45),0 14px 26px rgba(52,42,30,.14),
+             inset 0 2px 0 rgba(255,255,255,.9),inset 0 -6px 14px rgba(0,0,0,.05)}
+#lcd{height:128px;border-radius:16px;background:linear-gradient(180deg,#D3DCD7,#E2E8E3);
+  box-shadow:inset 0 4px 10px rgba(0,0,0,.16),inset 0 -1px 0 rgba(255,255,255,.6);
+  display:flex;align-items:center;justify-content:flex-end;padding:0 22px;direction:ltr;
+  font-weight:300;color:#26303C;letter-spacing:1px}
+#lcd .num{font-size:74px;line-height:1}
+#lcd .cur{font-size:38px;margin-left:10px;font-weight:400;opacity:.85}
+#keys{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(5,64px);gap:14px;margin-top:30px}
+.k{border-radius:16px;background:linear-gradient(180deg,#FFFFFF,#F1EEE9);
+  box-shadow:0 5px 0 #D9D3CA,0 8px 12px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:500;color:#3A4552;direction:ltr}
+.k.op{background:linear-gradient(180deg,#6A87A5,#55728F);color:#F4F7FA;box-shadow:0 5px 0 #3F5A74,0 8px 12px rgba(0,0,0,.12)}
+.k.eq{grid-row:span 2;background:linear-gradient(180deg,#2F4058,#233247);color:#fff;box-shadow:0 5px 0 #17212F,0 8px 12px rgba(0,0,0,.18)}
+.k.zero{grid-column:span 2}
+
+/* ---------- tablet ---------- */
+#tablet{width:640px;height:900px;border-radius:58px;padding:24px;
+  background:linear-gradient(160deg,#2A313B,#191E25);
+  box-shadow:0 60px 90px -30px rgba(40,32,22,.5),0 16px 30px rgba(40,32,22,.18),inset 0 0 0 2px rgba(255,255,255,.06)}
+#screen{width:100%;height:100%;border-radius:36px;background:#F6F4F0;overflow:hidden;position:relative;padding:34px 30px}
+.app-top{display:flex;justify-content:space-between;align-items:center;flex-direction:row-reverse;margin-bottom:26px}
+.app-top i{display:block;width:150px;height:16px;border-radius:8px;background:#CFD6DD}
+.app-top b{display:block;width:44px;height:44px;border-radius:50%;background:#DDE4EA}
+#card{border-radius:30px;background:linear-gradient(150deg,#4E7193,#36536F);padding:30px 34px 38px;color:#fff;
+  box-shadow:0 22px 40px -18px rgba(30,50,75,.55);position:relative}
+#card .lbl{width:170px;height:16px;border-radius:8px;background:rgba(255,255,255,.55);margin-inline-start:auto}
+#card .lbl2{width:110px;height:12px;border-radius:6px;background:rgba(255,255,255,.35);margin-top:14px}
+#qm{font-size:230px;font-weight:700;line-height:.95;text-align:center;margin:8px 0 2px;color:#fff;will-change:filter,opacity}
+#card .chips{display:flex;gap:12px;justify-content:center}
+#card .chips i{display:block;width:120px;height:40px;border-radius:20px;background:rgba(255,255,255,.18)}
+.tx{display:flex;align-items:center;gap:18px;padding:20px 6px;border-bottom:2px solid #ECE9E3;flex-direction:row-reverse}
+.tx .ic{width:56px;height:56px;border-radius:18px;background:#E3EAF1;flex:none}
+.tx .tt{flex:1}
+.tx .tt i{display:block;height:13px;border-radius:7px;background:#D6D1C9;margin:6px 0 6px auto}
+.tx .amt{width:90px;height:14px;border-radius:7px;background:#C5CDD6}
+.nav{position:absolute;left:30px;right:30px;bottom:26px;display:flex;justify-content:space-around}
+.nav i{display:block;width:40px;height:40px;border-radius:12px;background:#E1E5E9}
+.nav i:last-child{background:#B8C7D6}
+
+/* ---------- screen-space layers ---------- */
+#light{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1200px 900px at 85% 6%,rgba(255,249,236,.42),rgba(255,249,236,0) 65%),
+             radial-gradient(1400px 1700px at 50% 50%,rgba(0,0,0,0) 55%,rgba(58,46,32,.20) 100%)}
+#calm{position:absolute;inset:0;background:#F4F0EA;opacity:0}
+.band{position:absolute;left:-200px;right:-200px;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side,rgba(248,245,239,.94) 0%,rgba(248,245,239,.86) 55%,rgba(248,245,239,0) 100%)}
+
+.txt{position:absolute;left:60px;right:60px;direction:rtl;text-align:center;color:var(--ink);font-weight:800;
+  letter-spacing:-.5px;opacity:0;will-change:transform,opacity}
+.txt .w{display:inline-block;will-change:transform,opacity}
+#t1 .l1{font-size:96px;line-height:1.08}
+#t1 .l2{font-size:140px;line-height:1.1;color:var(--blue)}
+#t2{font-size:118px;line-height:1.1}
+#t2 .em{color:var(--blue)}
+#t3{font-size:118px;line-height:1.12}
+#t3 .u{position:relative}
+#t3 .ul{position:absolute;left:4px;right:4px;bottom:2px;height:10px;border-radius:5px;background:var(--blue);
+  transform:scaleX(0);transform-origin:100% 50%}
+#t4a{font-size:104px;line-height:1.1}
+#t4a .net{font-size:1.2em;color:var(--blue)}
+#t4b{font-size:84px;line-height:1.1;font-weight:600;color:var(--slate)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div id="desk"></div>
+
+    <!-- pension statement -->
+    <div class="obj paper" id="statement" style="width:440px;height:600px">
+      <div class="hdr" style="background:#2F4058"><i style="width:160px"></i><i style="width:70px;opacity:.5"></i></div>
+      <div class="bar dark thick" style="width:58%;margin-inline-start:auto"></div>
+      <div class="bar" style="width:80%;margin-inline-start:auto"></div>
+      <svg width="372" height="150" viewBox="0 0 372 150" style="display:block;margin:20px 0 22px">
+        <line x1="0" y1="140" x2="372" y2="140" stroke="#DDD8CF" stroke-width="2"/>
+        <polyline points="10,128 70,118 130,104 190,92 250,70 310,52 362,30" fill="none" stroke="#6E8CAB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="10,128 70,118 130,104 190,92 250,70 310,52 362,30 362,140 10,140" fill="rgba(110,140,171,.12)"/>
+      </svg>
+      <div class="bar" style="width:92%"></div><div class="bar" style="width:76%"></div>
+      <div class="bar" style="width:86%"></div><div class="bar" style="width:60%"></div>
+    </div>
+
+    <!-- documents that slide in (scene 2) -->
+    <div class="obj paper" id="docTax" style="width:380px;height:500px">
+      <div class="hdr" style="background:#55728F"><i style="width:120px"></i></div>
+      <div class="grid"><div class="cell"><div class="bar"></div></div><div class="cell"><div class="bar"></div></div>
+        <div class="cell"><div class="bar"></div></div><div class="cell"><div class="bar dark"></div></div></div>
+      <div class="bar" style="width:88%"></div><div class="bar" style="width:70%"></div>
+      <div class="stamp"></div>
+    </div>
+    <div class="obj paper" id="docHealth" style="width:380px;height:500px">
+      <div class="hdr" style="background:#7C93A9"><i style="width:140px"></i></div>
+      <svg width="76" height="76" viewBox="0 0 76 76" style="display:block;margin:0 0 22px auto">
+        <circle cx="38" cy="38" r="34" fill="none" stroke="#8FA7BF" stroke-width="4"/>
+        <path d="M38 20v36M20 38h36" stroke="#8FA7BF" stroke-width="8" stroke-linecap="round"/></svg>
+      <div class="bar" style="width:90%"></div><div class="bar" style="width:84%"></div>
+      <div class="bar" style="width:66%"></div><div class="bar dark thick" style="width:40%;margin-top:24px"></div>
+    </div>
+    <div class="obj paper" id="docForm" style="width:380px;height:500px">
+      <div class="hdr" style="background:#A3927A"><i style="width:110px"></i><i style="width:46px;opacity:.6"></i></div>
+      <div class="row"><div class="box on"></div><div class="bar" style="flex:1;margin:0"></div></div>
+      <div class="row"><div class="box"></div><div class="bar" style="flex:1;margin:0;max-width:70%"></div></div>
+      <div class="row"><div class="box on"></div><div class="bar" style="flex:1;margin:0"></div></div>
+      <div class="row"><div class="box"></div><div class="bar" style="flex:1;margin:0;max-width:55%"></div></div>
+      <div class="sig"></div>
+    </div>
+    <div class="obj paper" id="docBank" style="width:380px;height:500px">
+      <div class="hdr" style="background:#3E5A78"><i style="width:130px"></i></div>
+      <div class="tbl">
+        <div class="r"><i style="width:60%"></i><i style="width:18%;margin-inline-start:auto"></i></div>
+        <div class="r"><i style="width:48%"></i><i style="width:22%;margin-inline-start:auto"></i></div>
+        <div class="r"><i style="width:55%"></i><i style="width:16%;margin-inline-start:auto"></i></div>
+        <div class="r"><i style="width:40%"></i><i style="width:20%;margin-inline-start:auto"></i></div>
+        <div class="r"><i style="width:58%"></i><i style="width:18%;margin-inline-start:auto"></i></div>
+        <div class="r"><i style="width:46%"></i><i style="width:24%;margin-inline-start:auto;background:#9FB2C5"></i></div>
+      </div>
+    </div>
+
+    <!-- calculator -->
+    <div class="obj" id="calc">
+      <div id="lcd"><span class="num">12,000</span><span class="cur">₪</span></div>
+      <div id="keys">
+        <div class="k">±</div><div class="k">%</div><div class="k op">÷</div><div class="k op">×</div>
+        <div class="k">7</div><div class="k">8</div><div class="k">9</div><div class="k op">−</div>
+        <div class="k">4</div><div class="k">5</div><div class="k">6</div><div class="k op">+</div>
+        <div class="k">1</div><div class="k">2</div><div class="k">3</div><div class="k eq" id="eq">=</div>
+        <div class="k zero">0</div><div class="k">.</div>
+      </div>
+    </div>
+
+    <!-- glasses -->
+    <div class="obj" id="glasses" style="width:330px;height:150px">
+      <svg width="330" height="150" viewBox="0 0 330 150" style="overflow:visible;filter:drop-shadow(0 18px 14px rgba(50,40,28,.28))">
+        <path d="M40 40 L-30 150" stroke="#2B2F36" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <path d="M290 40 L345 150" stroke="#2B2F36" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <rect x="18" y="30" width="128" height="96" rx="40" fill="rgba(205,220,234,.28)" stroke="#2B2F36" stroke-width="8"/>
+        <rect x="184" y="30" width="128" height="96" rx="40" fill="rgba(205,220,234,.28)" stroke="#2B2F36" stroke-width="8"/>
+        <path d="M146 58 Q165 40 184 58" stroke="#2B2F36" stroke-width="7" fill="none"/>
+        <path d="M40 46 Q70 38 96 44" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M206 46 Q236 38 262 44" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- pen -->
+    <div class="obj" id="pen" style="width:400px;height:30px">
+      <div style="position:absolute;left:0;top:7px;width:34px;height:16px;background:linear-gradient(180deg,#E6E6E6,#9DA3A9);clip-path:polygon(0 50%,100% 0,100% 100%)"></div>
+      <div style="position:absolute;left:32px;top:0;right:0;height:30px;border-radius:4px 15px 15px 4px;background:linear-gradient(180deg,#3B4C63 0%,#1F2A3A 55%,#141B26 100%);box-shadow:0 16px 18px -8px rgba(40,30,20,.45)"></div>
+      <div style="position:absolute;left:52px;top:0;width:10px;height:30px;background:linear-gradient(180deg,#D8D8D5,#9EA3A8)"></div>
+      <div style="position:absolute;right:30px;top:-4px;width:120px;height:8px;border-radius:4px;background:linear-gradient(180deg,#E3E3E0,#A3A8AD)"></div>
+    </div>
+
+    <!-- tablet with bank app -->
+    <div class="obj" id="tablet">
+      <div id="screen">
+        <div class="app-top"><b></b><i></i></div>
+        <div id="card">
+          <div class="lbl"></div><div class="lbl2"></div>
+          <div id="qm">?</div>
+          <div class="chips"><i></i><i></i></div>
+        </div>
+        <div style="height:18px"></div>
+        <div class="tx"><div class="ic"></div><div class="tt"><i style="width:60%"></i><i style="width:35%;opacity:.6"></i></div><div class="amt"></div></div>
+        <div class="tx"><div class="ic"></div><div class="tt"><i style="width:50%"></i><i style="width:30%;opacity:.6"></i></div><div class="amt"></div></div>
+        <div class="tx"><div class="ic"></div><div class="tt"><i style="width:66%"></i><i style="width:40%;opacity:.6"></i></div><div class="amt"></div></div>
+        <div class="nav"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="light"></div>
+  <div id="calm"></div>
+
+  <!-- ===== Hebrew motion-graphics text layers ===== -->
+  <div class="band" id="band" style="top:250px;height:640px"></div>
+
+  <div class="txt" id="t1" style="top:385px">
+    <div class="l1">בדו״ח השנתי כתוב</div>
+    <div class="l2">12,000 ש״ח</div>
+  </div>
+
+  <div class="txt" id="t2" style="top:430px">זה <span class="w em" id="t2no">לא</span> מה<br>שנשאר לכם.</div>
+
+  <div class="txt" id="t3" style="top:310px;opacity:1">
+    <span class="w">כמה</span> <span class="w u">באמת<span class="ul"></span></span><br><span class="w">נכנס</span> <span class="w">לחשבון?</span>
+  </div>
+
+  <div class="band" id="band4" style="top:560px;height:760px"></div>
+  <div class="txt" id="t4a" style="top:760px">בפרישה בודקים <span class="net">נטו</span></div>
+  <div class="txt" id="t4b" style="top:915px">לא רק ברוטו</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (x,a=0,b=1) => Math.min(b,Math.max(a,x));
+const lerp = (a,b,p) => a+(b-a)*p;
+const prog = (t,t0,t1) => clamp((t-t0)/(t1-t0));
+const eOut = p => 1-Math.pow(1-p,3);
+const eIO  = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+const eOutQuint = p => 1-Math.pow(1-p,5);
+
+/* place an object by its centre */
+function place(el,cx,cy,rot=0,extra=''){
+  el.style.left = (cx - el.offsetWidth/2)+'px';
+  el.style.top  = (cy - el.offsetHeight/2)+'px';
+  el.style.transform = `rotate(${rot}deg) ${extra}`;
+}
+
+/* camera keyframes: [time, centreX, centreY, zoom, ease-into-this-key] */
+const CAM = [
+  [0.0,  540,  818, 2.05, null],
+  [1.1,  540,  848, 2.50, eOutQuint],
+  [3.0,  540,  854, 2.60, p=>p],
+  [4.35, 540, 1060, 1.00, eIO],
+  [6.0,  540, 1050, 1.04, p=>p],
+  [7.05,1500,  905, 1.40, eIO],
+  [10.0,1500,  915, 1.50, p=>p],
+  [12.2,1020, 1040, 0.72, eIO],
+  [15.0,1020, 1040, 0.72, p=>p],
+];
+function camera(t){
+  for(let i=1;i<CAM.length;i++){
+    const [t1,x1,y1,z1,ease]=CAM[i], [t0,x0,y0,z0]=CAM[i-1];
+    if(t<=t1){
+      const p=ease(prog(t,t0,t1));
+      return {x:lerp(x0,x1,p), y:lerp(y0,y1,p), z:Math.exp(lerp(Math.log(z0),Math.log(z1),p))};
+    }
+  }
+  const l=CAM[CAM.length-1]; return {x:l[1],y:l[2],z:l[3]};
+}
+
+/* documents: final pose + entry offset */
+const DOCS = [
+  {el:'docTax',    x:255, y:585,  r:-5, dx:-760, dy:-60,  dr:-22, t:3.35},
+  {el:'docHealth', x:835, y:610,  r: 6, dx: 760, dy:-40,  dr: 20, t:3.80},
+  {el:'docForm',   x:240, y:1520, r: 5, dx:-760, dy:140,  dr: 18, t:4.25},
+  {el:'docBank',   x:845, y:1495, r:-7, dx: 760, dy:120,  dr:-20, t:4.70},
+];
+
+function render(t){
+  /* ---- camera ---- */
+  const c = camera(t);
+  const world = $('world');
+  world.style.transform = `translate(${540-c.x*c.z}px,${960-c.y*c.z}px) scale(${c.z})`;
+  const endBlur = 10*eIO(prog(t,10.0,12.2));
+  const panBlur = 2.2*Math.sin(Math.PI*prog(t,6.0,7.05));
+  world.style.filter = `blur(${(endBlur+panBlur).toFixed(2)}px)`;
+  $('calm').style.opacity = (0.42*eIO(prog(t,10.0,12.2))).toFixed(3);
+
+  /* ---- static props with depth of field ---- */
+  const dof1 = 4.5*(1-eIO(prog(t,2.9,4.2)));          // macro shot
+  const dof3 = 3.2*eIO(prog(t,6.3,7.2));               // focus on tablet
+  const propBlur = (dof1+dof3).toFixed(2);
+  place($('statement'),300,1000,-8);
+  $('statement').style.filter=`blur(${propBlur}px)`;
+  place($('glasses'),805,705,14);
+  $('glasses').style.filter=`blur(${propBlur}px)`;
+  place($('pen'),815,1395,-32);
+  $('pen').style.filter=`blur(${propBlur}px)`;
+  place($('calc'),540,1150,0);
+  $('calc').style.filter=`blur(${dof3.toFixed(2)}px)`;
+  place($('tablet'),1500,1100,-3);
+
+  /* = key press synced with click */
+  const press = Math.sin(Math.PI*prog(t,0.06,0.26));
+  $('eq').style.transform=`translateY(${(4*press).toFixed(2)}px) scale(${(1-0.05*press).toFixed(3)})`;
+
+  /* ---- documents slide in ---- */
+  for(const d of DOCS){
+    const el=$(d.el), p=eOut(prog(t,d.t,d.t+0.7));
+    el.style.visibility = t<d.t ? 'hidden':'visible';
+    place(el, d.x+d.dx*(1-p), d.y+d.dy*(1-p), d.r+d.dr*(1-p));
+    el.style.filter=`blur(${dof3.toFixed(2)}px)`;
+  }
+
+  /* ---- question mark: blur -> sharp ---- */
+  const q = prog(t,6.6,8.1);
+  $('qm').style.opacity = eOut(prog(t,6.6,7.0)).toFixed(3);
+  $('qm').style.filter = `blur(${(16*(1-eIO(q))).toFixed(2)}px)`;
+
+  /* ---- text backing band (negative space behind text) ---- */
+  const bandIn  = eOut(prog(t,0.10,0.5));
+  const bandOut = 1-eOut(prog(t,9.75,10.3));
+  $('band').style.opacity = (bandIn*bandOut).toFixed(3);
+  $('band4').style.opacity = eOut(prog(t,10.2,11.0)).toFixed(3);
+
+  /* ---- T1: scale 90% -> 100% + short fade ---- */
+  {
+    const pin=eOut(prog(t,0.20,0.55)), pout=eIO(prog(t,2.85,3.20));
+    const el=$('t1');
+    el.style.opacity=(pin*(1-pout)).toFixed(3);
+    el.style.transform=`scale(${(0.9+0.1*pin).toFixed(4)})`;
+  }
+
+  /* ---- T2: enters from the right, 'לא' pulses to 110% once ---- */
+  {
+    const pin=eOut(prog(t,3.35,3.95)), pout=eIO(prog(t,5.75,6.05));
+    const el=$('t2');
+    el.style.opacity=(pin*(1-pout)).toFixed(3);
+    el.style.transform=`translateX(${(220*(1-pin)).toFixed(2)}px)`;
+    const pulse=Math.sin(Math.PI*prog(t,4.15,4.70));
+    $('t2no').style.transform=`scale(${(1+0.10*pulse).toFixed(4)})`;
+  }
+
+  /* ---- T3: word-by-word reveal, right to left; underline under 'באמת' ---- */
+  {
+    const words=$('t3').querySelectorAll('.w');
+    const pout=eIO(prog(t,9.75,10.05));
+    words.forEach((w,i)=>{
+      const p=eOut(prog(t,6.75+i*0.22,6.75+i*0.22+0.45));
+      w.style.opacity=(p*(1-pout)).toFixed(3);
+      w.style.transform=`translateY(${(30*(1-p)).toFixed(2)}px)`;
+    });
+    document.querySelector('#t3 .ul').style.transform=`scaleX(${eIO(prog(t,8.0,8.55)).toFixed(4)})`;
+  }
+
+  /* ---- T4: two lines, fade-and-rise, 0.7s apart, then fully static ---- */
+  {
+    const a=eOut(prog(t,10.55,11.20)), b=eOut(prog(t,11.25,11.90));
+    $('t4a').style.opacity=a.toFixed(3);
+    $('t4a').style.transform=`translateY(${(40*(1-a)).toFixed(2)}px)`;
+    $('t4b').style.opacity=b.toFixed(3);
+    $('t4b').style.transform=`translateY(${(40*(1-b)).toFixed(2)}px)`;
+  }
+}
+window.render = render;
+window.addEventListener('load',()=>render(0));
+</script>
+</body>
+</html>
