@@ -14,6 +14,7 @@ const { chromium } = require('playwright');
   const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   await page.goto('file://' + path.resolve(__dirname, 'scene.html'));
+  await page.evaluate(() => window.sceneReady);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => Promise.all([...document.fonts].map(f => f.load())));
 

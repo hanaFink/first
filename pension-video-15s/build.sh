@@ -10,7 +10,7 @@ python3 audio.py "$WORK/soundtrack.wav"
 
 ffmpeg -y -loglevel error -framerate 30 -i "$WORK/frames/%04d.png" -i "$WORK/soundtrack.wav" \
   -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -profile:v high -r 30 \
-  -c:a aac -b:a 192k -ar 44100 -shortest -movflags +faststart \
+  -af loudnorm=I=-14:TP=-1.5:LRA=11 -c:a aac -b:a 192k -ar 44100 -shortest -movflags +faststart \
   pension-net-vs-gross-15s.mp4
 
 echo "done: $(pwd)/pension-net-vs-gross-15s.mp4"

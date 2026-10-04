@@ -40,10 +40,10 @@ def env_adsr(t, start, end, atk, rel):
 D3, E3, Fs3, G2, A2, A3, B3 = 146.83, 164.81, 185.00, 98.00, 110.00, 220.00, 246.94
 Cs4, D4, E4, Fs4 = 277.18, 293.66, 329.63, 369.99
 CHORDS = [
-    (0.00, 6.25, [D3, A3, Cs4, E4, Fs4]),          # Dmaj9
-    (6.00, 10.15, [G2, D3, Fs3, B3, E4]),          # Gmaj7(9)
-    (9.95, 10.75, [A2, D3, E3, A3, D4]),           # Asus4 (tension)
-    (10.55, 15.0, [D3 / 2 * 2, A3, D4, E4, Fs4]),  # Dadd9 resolve
+    (0.00, 8.25, [D3, A3, Cs4, E4, Fs4]),          # Dmaj9   certainty -> doubt
+    (8.00, 10.95, [G2, D3, Fs3, B3, E4]),          # Gmaj7(9) the real question
+    (10.75, 11.65, [A2, D3, E3, A3, D4]),          # Asus4 (tension)
+    (11.50, 15.0, [D3, A3, D4, E4, Fs4]),          # Dadd9 resolve (clarity)
 ]
 for start, end, notes in CHORDS:
     i0, i1 = int(start * SR), min(N, int((end + 1.4) * SR))
@@ -67,8 +67,8 @@ ARP = {0: [D4 * 2, A3 * 2, Fs4 * 2, E4 * 2], 1: [B3 * 2, Fs3 * 4, D4 * 2, E4 * 2
        2: [A3 * 2, D4 * 2, E4 * 2, D4 * 2], 3: [Fs4 * 2, D4 * 2, A3 * 2, E4 * 2]}
 t = 0.45
 n = 0
-while t < 12.6:
-    sec = 0 if t < 6 else 1 if t < 9.95 else 2 if t < 10.55 else 3
+while t < 13.6:
+    sec = 0 if t < 8 else 1 if t < 10.75 else 2 if t < 11.5 else 3
     if n % 4 != 3:  # leave breathing space
         f = ARP[sec][n % 4]
         i0 = int(t * SR)
@@ -82,7 +82,7 @@ while t < 12.6:
     n += 1
 
 # ---------- calculator click ----------
-for tc, amp in ((0.08, 0.55), (0.24, 0.22)):
+for tc, amp in ((0.30, 0.50), (0.46, 0.20)):
     i0 = int(tc * SR)
     prev = 0.0
     for j in range(int(0.04 * SR)):
@@ -94,10 +94,17 @@ for tc, amp in ((0.08, 0.55), (0.24, 0.22)):
         s += 0.5 * math.sin(TAU * 950 * tt) * math.exp(-tt / 0.008)
         add(i0 + j, amp * s * 0.5, 0.05)
 
-# ---------- paper slides (one per document) ----------
-for k, tp in enumerate((3.35, 3.80, 4.25, 4.70)):
+# ---------- document highlight tone (marker sweep over the figure) ----------
+i0 = int(0.58 * SR)
+for j in range(int(1.2 * SR)):
+    tt = j / SR
+    f = 880 + 440 * min(1, tt / 0.6)
+    e = min(1, tt / 0.08) * math.exp(-tt / 0.35)
+    add(i0 + j, 0.035 * e * math.sin(TAU * f * tt), -0.1)
+
+# ---------- paper slides (one per document: right, left, below, above) ----------
+for k, (tp, pan) in enumerate(((4.30, 0.55), (4.70, -0.55), (5.10, 0.10), (5.50, -0.10))):
     i0 = int((tp + 0.02) * SR)
-    pan = -0.45 if k % 2 == 0 else 0.45
     lp1 = lp2 = 0.0
     length = 0.55
     for j in range(int(length * SR)):
@@ -110,13 +117,13 @@ for k, tp in enumerate((3.35, 3.80, 4.25, 4.70)):
         e = min(1, tt / 0.07) * math.exp(-max(0, tt - 0.07) / 0.16)
         add(i0 + j, 0.30 * band * e * flutter, pan)
     # soft landing tap
-    i1 = int((tp + 0.62) * SR)
+    i1 = int((tp + 0.78) * SR)
     for j in range(int(0.12 * SR)):
         tt = j / SR
         add(i1 + j, 0.05 * math.sin(TAU * 110 * tt) * math.exp(-tt / 0.025), pan * 0.5)
 
 # ---------- digital tone (question mark) ----------
-for tb, f in ((6.68, 1318.51), (6.80, 1975.53)):
+for tb, f in ((8.88, 1318.51), (9.00, 1975.53)):
     i0 = int(tb * SR)
     for j in range(int(0.5 * SR)):
         tt = j / SR
@@ -124,7 +131,7 @@ for tb, f in ((6.68, 1318.51), (6.80, 1975.53)):
         add(i0 + j, 0.06 * e * (math.sin(TAU * f * tt) + 0.2 * math.sin(TAU * 2 * f * tt)), 0.15)
 
 # ---------- calm resolved accent (final message) ----------
-i0 = int(10.55 * SR)
+i0 = int(11.55 * SR)
 for k, f in enumerate((587.33, 739.99, 880.00, 1174.66)):
     pan = (k - 1.5) * 0.2
     for j in range(int(4.4 * SR)):
@@ -173,8 +180,8 @@ mixR = [a + 0.07 * b for a, b in zip(R, wetR)]
 for i in range(N):
     t = i / SR
     g = 1.0
-    if t > 13.6:
-        g = max(0.0, 1 - (t - 13.6) / 1.4) ** 1.5
+    if t > 14.0:
+        g = max(0.0, 1 - (t - 14.0) / 1.0) ** 1.5
     mixL[i] *= g
     mixR[i] *= g
 

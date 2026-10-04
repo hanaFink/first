@@ -10,81 +10,89 @@
   unicode-range:U+0000-00FF,U+2000-206F,U+2212;}
 
 :root{
-  --desk:#ECE6DC; --paper:#FBFAF7; --ink:#1D2939; --blue:#456A8E; --blue-soft:#8FA7BF;
-  --slate:#4D5B6B; --line:#D9D4CB; --shadow:rgba(64,52,38,.30);
+  --paper:#FCFAF6; --ink:#1B2638; --navy:#22324A; --blue:#46698C; --blue-soft:#8FA7BF;
+  --slate:#4D5B6B; --line:#DCD6CC; --sh:rgba(74,52,28,.34);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:1080px;height:1920px;overflow:hidden;background:var(--desk)}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#CDB08A}
 body{font-family:Heebo,sans-serif;-webkit-font-smoothing:antialiased}
 
-#stage{position:absolute;inset:0;overflow:hidden}
-#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;will-change:transform,filter}
+#stage{position:absolute;inset:0;overflow:hidden;background:#CDB08A}
+#world{position:absolute;left:0;top:0;width:2200px;height:2600px;transform-origin:0 0;will-change:transform}
 .obj{position:absolute;transform-origin:50% 50%}
 
-/* ---------- desk ---------- */
-#desk{position:absolute;left:-1400px;top:-1600px;width:4000px;height:5200px;
-  background:
-    radial-gradient(1400px 1100px at 62% 38%, rgba(255,252,246,.85), rgba(255,252,246,0) 70%),
-    radial-gradient(1800px 1400px at 30% 70%, rgba(222,213,200,.55), rgba(222,213,200,0) 70%),
-    linear-gradient(160deg,#F1ECE4 0%,#E8E1D6 55%,#E2DACD 100%);}
-#desk::after{content:"";position:absolute;inset:0;opacity:.07;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .2  0 0 0 1 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");}
+/* ---------- light oak desk (matte) ---------- */
+#desk{position:absolute;left:-900px;top:-1300px;width:4000px;height:5200px;background:#D7BA92}
+#desk img{position:absolute;inset:0;width:100%;height:100%}
 
 /* ---------- paper ---------- */
-.paper{background:var(--paper);border-radius:6px;padding:34px 34px;
-  box-shadow:0 28px 50px -22px var(--shadow),0 6px 14px rgba(64,52,38,.10),inset 0 0 0 1px rgba(0,0,0,.03)}
+/* light comes from the left, so shadows fall to the right */
+.paper{background:linear-gradient(105deg,#FFFEFB 0%,var(--paper) 60%,#F6F2EB 100%);border-radius:6px;padding:36px 36px;
+  box-shadow:26px 30px 46px -20px var(--sh),6px 8px 14px rgba(74,52,28,.12),inset 0 0 0 1px rgba(0,0,0,.035)}
 .bar{height:12px;border-radius:6px;background:var(--line);margin:0 0 15px 0}
-.bar.dark{background:#B9C3CE}
+.bar.r{margin-inline-start:auto}
+.bar.dark{background:#BAC4CF}
 .bar.thick{height:20px}
-.hdr{height:64px;border-radius:4px;margin-bottom:28px;display:flex;align-items:center;gap:14px;padding:0 18px;flex-direction:row-reverse}
-.hdr i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.75)}
+.hdr{height:66px;border-radius:4px;margin-bottom:28px;display:flex;align-items:center;gap:14px;padding:0 20px;flex-direction:row-reverse}
+.hdr i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.72)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 22px}
-.cell{border:2px solid #E2DDD5;border-radius:6px;height:62px;padding:14px}
+.cell{border:2px solid #E3DED6;border-radius:6px;height:62px;padding:14px}
 .cell .bar{margin:0;width:70%;margin-inline-start:auto}
-.row{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-direction:row-reverse}
-.box{width:24px;height:24px;border:2.5px solid #B7C1CC;border-radius:4px;flex:none}
-.box.on{background:var(--blue-soft);border-color:var(--blue-soft)}
-.stamp{width:110px;height:110px;border-radius:50%;border:4px solid rgba(69,106,142,.35);position:absolute;left:40px;bottom:46px;transform:rotate(-14deg)}
-.stamp::after{content:"";position:absolute;inset:14px;border-radius:50%;border:2px solid rgba(69,106,142,.25)}
-.sig{position:absolute;left:34px;right:34px;bottom:60px;height:2px;background:#CBD3DB}
-.tbl .r{display:flex;gap:14px;padding:12px 10px;border-radius:4px;flex-direction:row-reverse}
-.tbl .r:nth-child(odd){background:#F2F0EB}
-.tbl .r i{display:block;height:11px;border-radius:6px;background:#D4CEC4}
+.icon{display:block;margin:4px 0 24px auto}
+.stamp{width:112px;height:112px;border-radius:50%;border:4px solid rgba(70,105,140,.33);position:absolute;left:44px;bottom:48px;transform:rotate(-14deg)}
+.stamp::after{content:"";position:absolute;inset:14px;border-radius:50%;border:2px solid rgba(70,105,140,.24)}
+.tbl .r{display:flex;gap:14px;padding:13px 10px;border-radius:4px;flex-direction:row-reverse;align-items:center}
+.tbl .r:nth-child(odd){background:#F3F0EA}
+.tbl .r i{display:block;height:11px;border-radius:6px;background:#D5CFC5}
+.tbl .r .m{font-size:26px;font-weight:600;color:#8A97A6;line-height:11px;margin-inline-start:auto;width:22px;text-align:center}
+.tbl .r.tot{background:#E7EDF3;margin-top:6px}
+.tbl .r.tot i{background:#9DB1C5}
+
+/* annual report */
+#report .fig{position:relative;background:#F5F1E9;border-radius:12px;padding:24px 28px 18px;margin:26px 0 26px;
+  box-shadow:inset 0 0 0 1.5px #E7E0D4}
+#report .num{position:relative;direction:rtl;text-align:right;font-size:104px;font-weight:700;color:var(--navy);
+  line-height:1.05;letter-spacing:-1px;white-space:nowrap}
+#report .hl{position:absolute;right:-12px;width:350px;top:30px;height:62px;border-radius:10px;
+  background:linear-gradient(90deg,rgba(143,170,198,.34),rgba(143,170,198,.50));transform-origin:100% 50%;transform:scaleX(0)}
+#report .numtxt{position:relative}
 
 /* ---------- calculator ---------- */
 #calc{width:380px;height:580px;border-radius:40px;padding:34px 30px;
-  background:linear-gradient(170deg,#FAF8F5 0%,#ECE8E1 60%,#E3DED6 100%);
-  box-shadow:0 50px 80px -30px rgba(52,42,30,.45),0 14px 26px rgba(52,42,30,.14),
-             inset 0 2px 0 rgba(255,255,255,.9),inset 0 -6px 14px rgba(0,0,0,.05)}
-#lcd{height:128px;border-radius:16px;background:linear-gradient(180deg,#D3DCD7,#E2E8E3);
+  background:linear-gradient(110deg,#FBF9F6 0%,#EEEAE3 60%,#E4DFD7 100%);
+  box-shadow:34px 40px 70px -28px rgba(60,40,20,.48),8px 12px 22px rgba(60,40,20,.14),
+             inset 2px 2px 0 rgba(255,255,255,.95),inset -6px -6px 14px rgba(0,0,0,.05)}
+#lcd{height:128px;border-radius:16px;background:linear-gradient(180deg,#D2DBD6,#E3E9E4);
   box-shadow:inset 0 4px 10px rgba(0,0,0,.16),inset 0 -1px 0 rgba(255,255,255,.6);
   display:flex;align-items:center;justify-content:flex-end;padding:0 22px;direction:ltr;
   font-weight:300;color:#26303C;letter-spacing:1px}
 #lcd .num{font-size:74px;line-height:1}
-#lcd .cur{font-size:38px;margin-left:10px;font-weight:400;opacity:.85}
 #keys{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(5,64px);gap:14px;margin-top:30px}
 .k{border-radius:16px;background:linear-gradient(180deg,#FFFFFF,#F1EEE9);
-  box-shadow:0 5px 0 #D9D3CA,0 8px 12px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;
+  box-shadow:3px 5px 0 #D9D3CA,4px 8px 12px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;
   font-size:30px;font-weight:500;color:#3A4552;direction:ltr}
-.k.op{background:linear-gradient(180deg,#6A87A5,#55728F);color:#F4F7FA;box-shadow:0 5px 0 #3F5A74,0 8px 12px rgba(0,0,0,.12)}
-.k.eq{grid-row:span 2;background:linear-gradient(180deg,#2F4058,#233247);color:#fff;box-shadow:0 5px 0 #17212F,0 8px 12px rgba(0,0,0,.18)}
+.k.op{background:linear-gradient(180deg,#6A87A5,#55728F);color:#F4F7FA;box-shadow:3px 5px 0 #3F5A74,4px 8px 12px rgba(0,0,0,.12)}
+.k.eq{grid-row:span 2;background:linear-gradient(180deg,#2F4058,#233247);color:#fff;box-shadow:3px 5px 0 #17212F,4px 8px 12px rgba(0,0,0,.18)}
 .k.zero{grid-column:span 2}
 
 /* ---------- tablet ---------- */
 #tablet{width:640px;height:900px;border-radius:58px;padding:24px;
-  background:linear-gradient(160deg,#2A313B,#191E25);
-  box-shadow:0 60px 90px -30px rgba(40,32,22,.5),0 16px 30px rgba(40,32,22,.18),inset 0 0 0 2px rgba(255,255,255,.06)}
-#screen{width:100%;height:100%;border-radius:36px;background:#F6F4F0;overflow:hidden;position:relative;padding:34px 30px}
+  background:linear-gradient(120deg,#323A45,#1A1F27);
+  box-shadow:40px 52px 80px -28px rgba(50,34,18,.52),10px 14px 28px rgba(50,34,18,.18),inset 0 0 0 2px rgba(255,255,255,.07)}
+#screen{width:100%;height:100%;border-radius:36px;background:#F6F4F0;overflow:hidden;position:relative;padding:36px 30px}
+#screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.20) 41%,rgba(255,255,255,0) 52%,rgba(255,255,255,0) 66%,rgba(255,255,255,.10) 72%,rgba(255,255,255,0) 78%)}
 .app-top{display:flex;justify-content:space-between;align-items:center;flex-direction:row-reverse;margin-bottom:26px}
 .app-top i{display:block;width:150px;height:16px;border-radius:8px;background:#CFD6DD}
 .app-top b{display:block;width:44px;height:44px;border-radius:50%;background:#DDE4EA}
-#card{border-radius:30px;background:linear-gradient(150deg,#4E7193,#36536F);padding:30px 34px 38px;color:#fff;
+#card{border-radius:30px;background:linear-gradient(150deg,#4E7193,#2F4A66);padding:30px 32px 32px;color:#fff;
   box-shadow:0 22px 40px -18px rgba(30,50,75,.55);position:relative}
-#card .lbl{width:170px;height:16px;border-radius:8px;background:rgba(255,255,255,.55);margin-inline-start:auto}
-#card .lbl2{width:110px;height:12px;border-radius:6px;background:rgba(255,255,255,.35);margin-top:14px}
-#qm{font-size:230px;font-weight:700;line-height:.95;text-align:center;margin:8px 0 2px;color:#fff;will-change:filter,opacity}
-#card .chips{display:flex;gap:12px;justify-content:center}
-#card .chips i{display:block;width:120px;height:40px;border-radius:20px;background:rgba(255,255,255,.18)}
+#card .lbl{width:180px;height:16px;border-radius:8px;background:rgba(255,255,255,.55);margin-inline-start:auto}
+#card .lbl2{width:110px;height:12px;border-radius:6px;background:rgba(255,255,255,.33);margin:14px 0 20px auto}
+#field{position:relative;height:250px;border-radius:24px;border:3px dashed rgba(255,255,255,.5);background:rgba(255,255,255,.06)}
+#caret{position:absolute;right:46px;top:62px;width:6px;height:120px;border-radius:3px;background:rgba(255,255,255,.9)}
+#qm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:220px;font-weight:700;
+  line-height:1;color:#fff;will-change:filter,opacity}
 .tx{display:flex;align-items:center;gap:18px;padding:20px 6px;border-bottom:2px solid #ECE9E3;flex-direction:row-reverse}
 .tx .ic{width:56px;height:56px;border-radius:18px;background:#E3EAF1;flex:none}
 .tx .tt{flex:1}
@@ -94,75 +102,129 @@ body{font-family:Heebo,sans-serif;-webkit-font-smoothing:antialiased}
 .nav i{display:block;width:40px;height:40px;border-radius:12px;background:#E1E5E9}
 .nav i:last-child{background:#B8C7D6}
 
-/* ---------- screen-space layers ---------- */
-#light{position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(1200px 900px at 85% 6%,rgba(255,249,236,.42),rgba(255,249,236,0) 65%),
-             radial-gradient(1400px 1700px at 50% 50%,rgba(0,0,0,0) 55%,rgba(58,46,32,.20) 100%)}
-#calm{position:absolute;inset:0;background:#F4F0EA;opacity:0}
-.band{position:absolute;left:-200px;right:-200px;pointer-events:none;opacity:0;
-  background:radial-gradient(closest-side,rgba(248,245,239,.94) 0%,rgba(248,245,239,.86) 55%,rgba(248,245,239,0) 100%)}
+/* ---------- window light, in desk space ---------- */
+.lightlayer{position:absolute;left:-900px;top:-1300px;width:4000px;height:5200px;pointer-events:none}
+#sun{mix-blend-mode:screen;
+  background:
+    radial-gradient(1500px 2300px at 10% 42%,rgba(255,236,206,.55),rgba(255,236,206,0) 70%),
+    linear-gradient(98deg,rgba(255,240,215,.36) 0%,rgba(255,240,215,.14) 34%,rgba(255,240,215,0) 58%)}
+#shade{mix-blend-mode:multiply;
+  background:
+    /* window mullions, long soft diagonals */
+    linear-gradient(112deg,rgba(0,0,0,0) 30.5%,rgba(120,90,60,.16) 33%,rgba(120,90,60,.16) 34.4%,rgba(0,0,0,0) 37%),
+    linear-gradient(112deg,rgba(0,0,0,0) 55.5%,rgba(120,90,60,.13) 58%,rgba(120,90,60,.13) 59.2%,rgba(0,0,0,0) 61.5%),
+    linear-gradient(22deg,rgba(0,0,0,0) 44%,rgba(120,90,60,.11) 46.5%,rgba(120,90,60,.11) 47.5%,rgba(0,0,0,0) 50%),
+    /* sheer curtain folds */
+    repeating-linear-gradient(112deg,rgba(255,255,255,0) 0px,rgba(140,110,80,.07) 70px,rgba(255,255,255,0) 150px,rgba(140,110,80,.04) 230px,rgba(255,255,255,0) 300px),
+    /* fall-off away from the window */
+    linear-gradient(98deg,rgba(0,0,0,0) 40%,rgba(110,84,58,.20) 100%)}
+#leaves{position:absolute;left:-60px;top:1880px;width:620px;height:620px;mix-blend-mode:multiply;filter:blur(16px);opacity:.30;pointer-events:none}
 
-.txt{position:absolute;left:60px;right:60px;direction:rtl;text-align:center;color:var(--ink);font-weight:800;
-  letter-spacing:-.5px;opacity:0;will-change:transform,opacity}
+/* ---------- screen-space layers ---------- */
+.dof{position:absolute;left:0;right:0;pointer-events:none}
+#dofT{top:0;height:820px;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 25%,transparent 100%)}
+#dofB{bottom:0;height:640px;-webkit-mask-image:linear-gradient(0deg,#000 0%,#000 20%,transparent 100%)}
+#warm{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:#FFC98A;opacity:0}
+#cool{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;background:#B8C3CE;opacity:0}
+#vig{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1300px 1750px at 46% 48%,rgba(0,0,0,0) 52%,rgba(62,44,26,.26) 100%)}
+#dust{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+
+.band{position:absolute;left:-240px;right:-240px;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side,rgba(250,247,241,.93) 0%,rgba(250,247,241,.84) 52%,rgba(250,247,241,0) 100%)}
+
+.txt{position:absolute;left:50px;right:50px;direction:rtl;text-align:center;color:var(--ink);font-weight:800;
+  letter-spacing:-.5px;opacity:0;will-change:transform,opacity;text-shadow:0 2px 30px rgba(252,248,241,.75)}
 .txt .w{display:inline-block;will-change:transform,opacity}
-#t1 .l1{font-size:96px;line-height:1.08}
-#t1 .l2{font-size:140px;line-height:1.1;color:var(--blue)}
-#t2{font-size:118px;line-height:1.1}
+#t1{font-size:82px;line-height:1.16}
+#t1 .amt{color:var(--blue)}
+#t2{font-size:94px;line-height:1.1;left:30px;right:30px}
 #t2 .em{color:var(--blue)}
-#t3{font-size:118px;line-height:1.12}
+#t3{font-size:120px;line-height:1.14}
 #t3 .u{position:relative}
-#t3 .ul{position:absolute;left:4px;right:4px;bottom:2px;height:10px;border-radius:5px;background:var(--blue);
+#t3 .ul{position:absolute;left:4px;right:4px;bottom:4px;height:11px;border-radius:6px;background:var(--blue);
   transform:scaleX(0);transform-origin:100% 50%}
-#t4a{font-size:104px;line-height:1.1}
-#t4a .net{font-size:1.2em;color:var(--blue)}
-#t4b{font-size:84px;line-height:1.1;font-weight:600;color:var(--slate)}
+#t4{font-size:108px;line-height:1.14}
+#t4 .net{color:var(--blue);font-weight:900;display:inline-block}
 </style>
 </head>
 <body>
 <div id="stage">
   <div id="world">
-    <div id="desk"></div>
+    <div id="desk"><img id="oak" alt=""></div>
 
-    <!-- pension statement -->
-    <div class="obj paper" id="statement" style="width:440px;height:600px">
-      <div class="hdr" style="background:#2F4058"><i style="width:160px"></i><i style="width:70px;opacity:.5"></i></div>
-      <div class="bar dark thick" style="width:58%;margin-inline-start:auto"></div>
-      <div class="bar" style="width:80%;margin-inline-start:auto"></div>
-      <svg width="372" height="150" viewBox="0 0 372 150" style="display:block;margin:20px 0 22px">
-        <line x1="0" y1="140" x2="372" y2="140" stroke="#DDD8CF" stroke-width="2"/>
-        <polyline points="10,128 70,118 130,104 190,92 250,70 310,52 362,30" fill="none" stroke="#6E8CAB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        <polygon points="10,128 70,118 130,104 190,92 250,70 310,52 362,30 362,140 10,140" fill="rgba(110,140,171,.12)"/>
+    <!-- navy ceramic cup: the muted blue accent -->
+    <div class="obj" id="cup" style="width:300px;height:240px">
+      <svg width="300" height="240" viewBox="0 0 300 240" style="overflow:visible">
+        <defs>
+          <radialGradient id="cupG" cx="38%" cy="36%" r="70%"><stop offset="0" stop-color="#5B7898"/><stop offset=".65" stop-color="#2E4560"/><stop offset="1" stop-color="#1F3048"/></radialGradient>
+          <radialGradient id="teaG" cx="45%" cy="45%" r="60%"><stop offset="0" stop-color="#C79A62"/><stop offset="1" stop-color="#8E6438"/></radialGradient>
+          <filter id="cupSh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+        </defs>
+        <ellipse cx="150" cy="136" rx="112" ry="112" fill="rgba(70,48,26,.38)" filter="url(#cupSh)" transform="translate(26 22)"/>
+        <path d="M228 98 C 290 88, 296 170, 236 160" fill="none" stroke="#2A405A" stroke-width="22" stroke-linecap="round"/>
+        <circle cx="130" cy="122" r="108" fill="url(#cupG)"/>
+        <circle cx="130" cy="122" r="90" fill="#F3EEE6"/>
+        <circle cx="130" cy="122" r="76" fill="url(#teaG)"/>
+        <ellipse cx="104" cy="98" rx="26" ry="12" fill="rgba(255,250,240,.35)" transform="rotate(-30 104 98)"/>
+        <path d="M44 92 A 92 92 0 0 1 112 30" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="6" stroke-linecap="round"/>
       </svg>
-      <div class="bar" style="width:92%"></div><div class="bar" style="width:76%"></div>
-      <div class="bar" style="width:86%"></div><div class="bar" style="width:60%"></div>
     </div>
 
-    <!-- documents that slide in (scene 2) -->
-    <div class="obj paper" id="docTax" style="width:380px;height:500px">
-      <div class="hdr" style="background:#55728F"><i style="width:120px"></i></div>
+    <!-- annual pension report (hero) -->
+    <div class="obj paper" id="report" style="width:560px;height:760px">
+      <div class="hdr" style="background:var(--navy)"><i style="width:170px"></i><i style="width:70px;opacity:.5"></i></div>
+      <div class="bar dark thick r" style="width:58%"></div>
+      <div class="bar r" style="width:80%"></div>
+      <div class="fig">
+        <div class="bar r" style="width:44%;margin-bottom:6px"></div>
+        <div class="num"><span class="hl" id="hl"></span><span class="numtxt">12,000 ₪</span></div>
+      </div>
+      <svg width="488" height="130" viewBox="0 0 488 130" style="display:block;margin:0 0 24px">
+        <line x1="0" y1="122" x2="488" y2="122" stroke="#DFD9CF" stroke-width="2"/>
+        <polyline points="12,110 90,101 168,90 246,78 324,60 402,44 476,24" fill="none" stroke="#6E8CAB" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="12,110 90,101 168,90 246,78 324,60 402,44 476,24 476,122 12,122" fill="rgba(110,140,171,.12)"/>
+      </svg>
+      <div class="bar" style="width:92%"></div><div class="bar" style="width:76%"></div>
+      <div class="bar" style="width:86%"></div><div class="bar" style="width:58%"></div>
+    </div>
+
+    <!-- documents that glide in (scene 2) -->
+    <div class="obj paper" id="docTax" style="width:440px;height:580px">
+      <div class="hdr" style="background:#55728F"><i style="width:130px"></i></div>
+      <svg class="icon" width="84" height="84" viewBox="0 0 84 84">
+        <circle cx="42" cy="42" r="38" fill="none" stroke="#8FA7BF" stroke-width="4"/>
+        <path d="M27 58 L57 26" stroke="#8FA7BF" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="7" fill="none" stroke="#8FA7BF" stroke-width="5"/>
+        <circle cx="54" cy="54" r="7" fill="none" stroke="#8FA7BF" stroke-width="5"/></svg>
       <div class="grid"><div class="cell"><div class="bar"></div></div><div class="cell"><div class="bar"></div></div>
         <div class="cell"><div class="bar"></div></div><div class="cell"><div class="bar dark"></div></div></div>
       <div class="bar" style="width:88%"></div><div class="bar" style="width:70%"></div>
       <div class="stamp"></div>
     </div>
-    <div class="obj paper" id="docHealth" style="width:380px;height:500px">
-      <div class="hdr" style="background:#7C93A9"><i style="width:140px"></i></div>
-      <svg width="76" height="76" viewBox="0 0 76 76" style="display:block;margin:0 0 22px auto">
-        <circle cx="38" cy="38" r="34" fill="none" stroke="#8FA7BF" stroke-width="4"/>
-        <path d="M38 20v36M20 38h36" stroke="#8FA7BF" stroke-width="8" stroke-linecap="round"/></svg>
+    <div class="obj paper" id="docHealth" style="width:440px;height:580px">
+      <div class="hdr" style="background:#7C93A9"><i style="width:150px"></i></div>
+      <svg class="icon" width="84" height="84" viewBox="0 0 84 84">
+        <circle cx="42" cy="42" r="38" fill="none" stroke="#8FA7BF" stroke-width="4"/>
+        <path d="M42 22v40M22 42h40" stroke="#8FA7BF" stroke-width="9" stroke-linecap="round"/></svg>
       <div class="bar" style="width:90%"></div><div class="bar" style="width:84%"></div>
-      <div class="bar" style="width:66%"></div><div class="bar dark thick" style="width:40%;margin-top:24px"></div>
+      <div class="bar" style="width:66%"></div><div class="bar" style="width:78%"></div>
+      <div class="bar dark thick" style="width:40%;margin-top:26px"></div>
+      <div class="bar" style="width:72%;margin-top:26px"></div><div class="bar" style="width:52%"></div>
     </div>
-    <div class="obj paper" id="docForm" style="width:380px;height:500px">
-      <div class="hdr" style="background:#A3927A"><i style="width:110px"></i><i style="width:46px;opacity:.6"></i></div>
-      <div class="row"><div class="box on"></div><div class="bar" style="flex:1;margin:0"></div></div>
-      <div class="row"><div class="box"></div><div class="bar" style="flex:1;margin:0;max-width:70%"></div></div>
-      <div class="row"><div class="box on"></div><div class="bar" style="flex:1;margin:0"></div></div>
-      <div class="row"><div class="box"></div><div class="bar" style="flex:1;margin:0;max-width:55%"></div></div>
-      <div class="sig"></div>
+    <div class="obj paper" id="docSlip" style="width:440px;height:580px">
+      <div class="hdr" style="background:#3E5A78"><i style="width:120px"></i><i style="width:50px;opacity:.55"></i></div>
+      <div class="tbl">
+        <div class="r"><i style="width:56%"></i><i style="width:20%;margin-inline-start:auto;background:#B8C6D4"></i></div>
+        <div class="r"><i style="width:44%"></i><span class="m">−</span><i style="width:16%"></i></div>
+        <div class="r"><i style="width:52%"></i><span class="m">−</span><i style="width:14%"></i></div>
+        <div class="r"><i style="width:38%"></i><span class="m">−</span><i style="width:12%"></i></div>
+        <div class="r"><i style="width:48%"></i><span class="m">−</span><i style="width:15%"></i></div>
+        <div class="r tot"><i style="width:34%"></i><i style="width:22%;margin-inline-start:auto"></i></div>
+      </div>
     </div>
-    <div class="obj paper" id="docBank" style="width:380px;height:500px">
-      <div class="hdr" style="background:#3E5A78"><i style="width:130px"></i></div>
+    <div class="obj paper" id="docBank" style="width:440px;height:580px">
+      <div class="hdr" style="background:#4A6585"><i style="width:140px"></i></div>
       <div class="tbl">
         <div class="r"><i style="width:60%"></i><i style="width:18%;margin-inline-start:auto"></i></div>
         <div class="r"><i style="width:48%"></i><i style="width:22%;margin-inline-start:auto"></i></div>
@@ -175,7 +237,7 @@ body{font-family:Heebo,sans-serif;-webkit-font-smoothing:antialiased}
 
     <!-- calculator -->
     <div class="obj" id="calc">
-      <div id="lcd"><span class="num">12,000</span><span class="cur">₪</span></div>
+      <div id="lcd"><span class="num">12,000</span></div>
       <div id="keys">
         <div class="k">±</div><div class="k">%</div><div class="k op">÷</div><div class="k op">×</div>
         <div class="k">7</div><div class="k">8</div><div class="k">9</div><div class="k op">−</div>
@@ -185,65 +247,80 @@ body{font-family:Heebo,sans-serif;-webkit-font-smoothing:antialiased}
       </div>
     </div>
 
-    <!-- glasses -->
+    <!-- reading glasses -->
     <div class="obj" id="glasses" style="width:330px;height:150px">
-      <svg width="330" height="150" viewBox="0 0 330 150" style="overflow:visible;filter:drop-shadow(0 18px 14px rgba(50,40,28,.28))">
-        <path d="M40 40 L-30 150" stroke="#2B2F36" stroke-width="7" stroke-linecap="round" fill="none"/>
-        <path d="M290 40 L345 150" stroke="#2B2F36" stroke-width="7" stroke-linecap="round" fill="none"/>
-        <rect x="18" y="30" width="128" height="96" rx="40" fill="rgba(205,220,234,.28)" stroke="#2B2F36" stroke-width="8"/>
-        <rect x="184" y="30" width="128" height="96" rx="40" fill="rgba(205,220,234,.28)" stroke="#2B2F36" stroke-width="8"/>
-        <path d="M146 58 Q165 40 184 58" stroke="#2B2F36" stroke-width="7" fill="none"/>
-        <path d="M40 46 Q70 38 96 44" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/>
-        <path d="M206 46 Q236 38 262 44" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <svg width="330" height="150" viewBox="0 0 330 150" style="overflow:visible;filter:drop-shadow(18px 20px 12px rgba(60,40,20,.28))">
+        <defs><linearGradient id="lens" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="rgba(255,255,255,.55)"/><stop offset=".35" stop-color="rgba(210,224,236,.18)"/>
+          <stop offset="1" stop-color="rgba(190,206,222,.30)"/></linearGradient></defs>
+        <path d="M40 40 L-30 150" stroke="#2B2F36" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <path d="M290 40 L345 150" stroke="#2B2F36" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <rect x="18" y="30" width="128" height="96" rx="42" fill="url(#lens)" stroke="#2B2F36" stroke-width="6"/>
+        <rect x="184" y="30" width="128" height="96" rx="42" fill="url(#lens)" stroke="#2B2F36" stroke-width="6"/>
+        <path d="M146 58 Q165 40 184 58" stroke="#2B2F36" stroke-width="6" fill="none"/>
+        <path d="M40 48 Q70 38 98 44" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M206 48 Q236 38 264 44" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
 
-    <!-- pen -->
-    <div class="obj" id="pen" style="width:400px;height:30px">
+    <!-- dark blue pen -->
+    <div class="obj" id="pen" style="width:420px;height:30px">
       <div style="position:absolute;left:0;top:7px;width:34px;height:16px;background:linear-gradient(180deg,#E6E6E6,#9DA3A9);clip-path:polygon(0 50%,100% 0,100% 100%)"></div>
-      <div style="position:absolute;left:32px;top:0;right:0;height:30px;border-radius:4px 15px 15px 4px;background:linear-gradient(180deg,#3B4C63 0%,#1F2A3A 55%,#141B26 100%);box-shadow:0 16px 18px -8px rgba(40,30,20,.45)"></div>
-      <div style="position:absolute;left:52px;top:0;width:10px;height:30px;background:linear-gradient(180deg,#D8D8D5,#9EA3A8)"></div>
-      <div style="position:absolute;right:30px;top:-4px;width:120px;height:8px;border-radius:4px;background:linear-gradient(180deg,#E3E3E0,#A3A8AD)"></div>
+      <div style="position:absolute;left:32px;top:0;right:0;height:30px;border-radius:4px 15px 15px 4px;background:linear-gradient(180deg,#3E5272 0%,#1F2C40 55%,#141C2A 100%);box-shadow:16px 18px 18px -8px rgba(50,34,18,.45)"></div>
+      <div style="position:absolute;left:52px;top:0;width:10px;height:30px;background:linear-gradient(180deg,#E2DCCB,#A99F86)"></div>
+      <div style="position:absolute;right:30px;top:-4px;width:120px;height:8px;border-radius:4px;background:linear-gradient(180deg,#E8E2D2,#ABA28A)"></div>
     </div>
 
-    <!-- tablet with bank app -->
+    <!-- tablet with a bank-style app -->
     <div class="obj" id="tablet">
       <div id="screen">
         <div class="app-top"><b></b><i></i></div>
         <div id="card">
           <div class="lbl"></div><div class="lbl2"></div>
-          <div id="qm">?</div>
-          <div class="chips"><i></i><i></i></div>
+          <div id="field"><div id="caret"></div><div id="qm">?</div></div>
         </div>
-        <div style="height:18px"></div>
+        <div style="height:16px"></div>
         <div class="tx"><div class="ic"></div><div class="tt"><i style="width:60%"></i><i style="width:35%;opacity:.6"></i></div><div class="amt"></div></div>
         <div class="tx"><div class="ic"></div><div class="tt"><i style="width:50%"></i><i style="width:30%;opacity:.6"></i></div><div class="amt"></div></div>
         <div class="tx"><div class="ic"></div><div class="tt"><i style="width:66%"></i><i style="width:40%;opacity:.6"></i></div><div class="amt"></div></div>
         <div class="nav"><i></i><i></i><i></i><i></i></div>
       </div>
     </div>
+
+    <!-- window light falls on everything on the desk -->
+    <div class="lightlayer" id="shade"></div>
+    <svg id="leaves" viewBox="0 0 620 620">
+      <g fill="#5A4630">
+        <path d="M80 600 C 140 420, 240 330, 330 250 C 300 360, 220 470, 80 600Z"/>
+        <path d="M120 560 C 230 520, 380 520, 520 430 C 420 560, 260 600, 120 560Z"/>
+        <path d="M60 470 C 60 330, 120 200, 200 90 C 220 230, 170 360, 60 470Z"/>
+        <path d="M150 600 C 260 640, 420 660, 600 600 C 460 700, 280 680, 150 600Z"/>
+        <path d="M100 520 L 330 250 M 120 560 L 520 430 M 60 470 L 200 90" stroke="#5A4630" stroke-width="10"/>
+      </g>
+    </svg>
+    <div class="lightlayer" id="sun"></div>
   </div>
 
-  <div id="light"></div>
-  <div id="calm"></div>
+  <div class="dof" id="dofT"></div>
+  <div class="dof" id="dofB"></div>
+  <div id="cool"></div>
+  <div id="warm"></div>
+  <div id="vig"></div>
+  <canvas id="dust" width="1080" height="1920"></canvas>
 
-  <!-- ===== Hebrew motion-graphics text layers ===== -->
-  <div class="band" id="band" style="top:250px;height:640px"></div>
+  <!-- ===== Hebrew motion-graphics text layers (exact copy, one layer per sentence) ===== -->
+  <div class="band" id="band" style="top:300px;height:500px"></div>
 
-  <div class="txt" id="t1" style="top:385px">
-    <div class="l1">בדו״ח השנתי כתוב</div>
-    <div class="l2">12,000 ש״ח</div>
-  </div>
+  <div class="txt" id="t1" style="top:388px">בדו״ח השנתי רואים<br>שתקבל <span class="amt">12,000 ₪</span> בפנסיה</div>
 
-  <div class="txt" id="t2" style="top:430px">זה <span class="w em" id="t2no">לא</span> מה<br>שנשאר לכם.</div>
+  <div class="txt" id="t2" style="top:500px">זה <span class="w em" id="t2no">לא</span> מה שנשאר לכם.</div>
 
-  <div class="txt" id="t3" style="top:310px;opacity:1">
+  <div class="txt" id="t3" style="top:330px;opacity:1">
     <span class="w">כמה</span> <span class="w u">באמת<span class="ul"></span></span><br><span class="w">נכנס</span> <span class="w">לחשבון?</span>
   </div>
 
-  <div class="band" id="band4" style="top:560px;height:760px"></div>
-  <div class="txt" id="t4a" style="top:760px">בפרישה בודקים <span class="net">נטו</span></div>
-  <div class="txt" id="t4b" style="top:915px">לא רק ברוטו</div>
+  <div class="band" id="band4" style="top:560px;height:780px"></div>
+  <div class="txt" id="t4" style="top:812px">בפרישה בודקים <span class="net" id="net">נטו</span><br>ולא רק ברוטו</div>
 </div>
 
 <script>
@@ -253,134 +330,205 @@ const lerp = (a,b,p) => a+(b-a)*p;
 const prog = (t,t0,t1) => clamp((t-t0)/(t1-t0));
 const eOut = p => 1-Math.pow(1-p,3);
 const eIO  = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
-const eOutQuint = p => 1-Math.pow(1-p,5);
+const eSine = p => 0.5-0.5*Math.cos(Math.PI*p);
+const lin = p => p;
 
-/* place an object by its centre */
-function place(el,cx,cy,rot=0,extra=''){
-  el.style.left = (cx - el.offsetWidth/2)+'px';
-  el.style.top  = (cy - el.offsetHeight/2)+'px';
-  el.style.transform = `rotate(${rot}deg) ${extra}`;
+/* ---------- procedural light-oak texture, generated once ---------- */
+function rng(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
+function makeOak(){
+  const W=1000, H=1300, c=document.createElement('canvas'); c.width=W; c.height=H;
+  const g=c.getContext('2d'), r=rng(11);
+  g.fillStyle='#D8BB93'; g.fillRect(0,0,W,H);
+  // broad tonal drift
+  for(let i=0;i<14;i++){
+    const y=r()*H, h=60+r()*220;
+    const grd=g.createLinearGradient(0,y,0,y+h);
+    const a=0.05+r()*0.07, dark=r()<0.5;
+    const col=dark?`rgba(150,105,60,${a})`:`rgba(245,225,195,${a})`;
+    grd.addColorStop(0,'rgba(0,0,0,0)'); grd.addColorStop(.5,col); grd.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=grd; g.fillRect(0,y,W,h);
+  }
+  // long wavy grain lines along the plank (x direction)
+  for(let i=0;i<520;i++){
+    let y=r()*H; const amp=2+r()*9, freq=0.002+r()*0.006, ph=r()*6.28;
+    const a=0.03+r()*0.10, w=0.5+r()*1.8;
+    g.strokeStyle=`rgba(${120+r()*30|0},${80+r()*20|0},${42+r()*16|0},${a})`; g.lineWidth=w;
+    g.beginPath();
+    for(let x=-10;x<=W+10;x+=12){ const yy=y+amp*Math.sin(x*freq+ph)+3*Math.sin(x*freq*3.1+ph*2); x<0?g.moveTo(x,yy):g.lineTo(x,yy); }
+    g.stroke();
+  }
+  // a few soft cathedral arcs
+  for(let k=0;k<5;k++){
+    const cx=r()*W, cy=r()*H;
+    for(let j=0;j<9;j++){
+      g.strokeStyle=`rgba(130,88,48,${0.05+r()*0.04})`; g.lineWidth=1+r();
+      g.beginPath(); g.ellipse(cx,cy,260+j*26,26+j*9,0,Math.PI*1.05,Math.PI*1.95); g.stroke();
+    }
+  }
+  // fine pores / matte noise
+  const img=g.getImageData(0,0,W,H), d=img.data;
+  for(let i=0;i<d.length;i+=4){ const n=(r()-0.5)*14; d[i]+=n; d[i+1]+=n*0.9; d[i+2]+=n*0.75; }
+  g.putImageData(img,0,0);
+  return c.toDataURL('image/jpeg',0.92);
 }
 
-/* camera keyframes: [time, centreX, centreY, zoom, ease-into-this-key] */
+/* ---------- desk layout (world px) ---------- */
+function place(el,cx,cy,rot=0){
+  el.style.left = (cx - el.offsetWidth/2)+'px';
+  el.style.top  = (cy - el.offsetHeight/2)+'px';
+  el.style.transform = `rotate(${rot}deg)`;
+}
+const PROPS = {
+  report: [1000,1150,-3], calc: [1430,1330,7], glasses: [470,1560,10], pen: [440,2090,32],
+  tablet: [1480,2150,-4], cup: [400,430,0],
+};
+/* documents: final pose + entry offset + start time */
+const DOCS = [
+  {el:'docTax',    x:1650, y:735,  r: 5, dx: 1300, dy:-60,  dr: 14, t:4.30},   // from the right
+  {el:'docHealth', x: 430, y:1010, r:-6, dx:-1300, dy: 40,  dr:-14, t:4.70},   // from the left
+  {el:'docSlip',   x: 830, y:1890, r: 4, dx:   80, dy:1500, dr: 10, t:5.10},   // from below
+  {el:'docBank',   x:1010, y: 330, r:-5, dx:  -60, dy:-1500,dr:-10, t:5.50},   // from above
+];
+
+/* ---------- camera: [time, cx, cy, zoom, tilt°, roll°, ease into key] ---------- */
 const CAM = [
-  [0.0,  540,  818, 2.05, null],
-  [1.1,  540,  848, 2.50, eOutQuint],
-  [3.0,  540,  854, 2.60, p=>p],
-  [4.35, 540, 1060, 1.00, eIO],
-  [6.0,  540, 1050, 1.04, p=>p],
-  [7.05,1500,  905, 1.40, eIO],
-  [10.0,1500,  915, 1.50, p=>p],
-  [12.2,1020, 1040, 0.72, eIO],
-  [15.0,1020, 1040, 0.72, p=>p],
+  [0.0,  1050, 1185, 1.50, 34, -2.0, null],
+  [3.8,  1012, 1150, 1.90, 30, -1.0, eSine],   // slow luxurious push-in on the figure
+  [5.4,  1010, 1180, 0.90, 22,  0.0, eIO],     // widen to reveal the complexity
+  [7.9,  1030, 1205, 0.86, 21,  0.6, lin],     // gentle drift
+  [9.0,  1465, 1975, 1.28, 18,  1.6, eIO],     // lateral glide down to the tablet
+  [10.9, 1475, 2000, 1.35, 18,  1.6, lin],
+  [12.4, 1060, 1330, 0.57,  9,  0.0, eIO],     // pull back to the full still life
+  [15.0, 1060, 1330, 0.555, 8,  0.0, lin],
 ];
 function camera(t){
   for(let i=1;i<CAM.length;i++){
-    const [t1,x1,y1,z1,ease]=CAM[i], [t0,x0,y0,z0]=CAM[i-1];
-    if(t<=t1){
-      const p=ease(prog(t,t0,t1));
-      return {x:lerp(x0,x1,p), y:lerp(y0,y1,p), z:Math.exp(lerp(Math.log(z0),Math.log(z1),p))};
+    const k1=CAM[i], k0=CAM[i-1];
+    if(t<=k1[0]){
+      const p=k1[6](prog(t,k0[0],k1[0]));
+      return {x:lerp(k0[1],k1[1],p), y:lerp(k0[2],k1[2],p),
+              z:Math.exp(lerp(Math.log(k0[3]),Math.log(k1[3]),p)), tilt:lerp(k0[4],k1[4],p), roll:lerp(k0[5],k1[5],p)};
     }
   }
-  const l=CAM[CAM.length-1]; return {x:l[1],y:l[2],z:l[3]};
+  const l=CAM[CAM.length-1]; return {x:l[1],y:l[2],z:l[3],tilt:l[4],roll:l[5]};
 }
 
-/* documents: final pose + entry offset */
-const DOCS = [
-  {el:'docTax',    x:255, y:585,  r:-5, dx:-760, dy:-60,  dr:-22, t:3.35},
-  {el:'docHealth', x:835, y:610,  r: 6, dx: 760, dy:-40,  dr: 20, t:3.80},
-  {el:'docForm',   x:240, y:1520, r: 5, dx:-760, dy:140,  dr: 18, t:4.25},
-  {el:'docBank',   x:845, y:1495, r:-7, dx: 760, dy:120,  dr:-20, t:4.70},
-];
+/* ---------- dust motes in the sunbeam ---------- */
+const MOTES = (() => { const r=rng(5), a=[]; for(let i=0;i<90;i++) a.push({
+  x:r()*1080, y:r()*1920, s:0.8+r()*2.6, vx:4+r()*10, vy:-3-r()*8, ph:r()*6.28, f:0.4+r()*0.9, a:0.25+r()*0.55 }); return a; })();
+function drawDust(t, strength){
+  const c=$('dust'), g=c.getContext('2d');
+  g.clearRect(0,0,1080,1920);
+  if(strength<=0.001) return;
+  for(const m of MOTES){
+    const x=(m.x+m.vx*t+14*Math.sin(t*m.f+m.ph))%1120-20, y=((m.y+m.vy*t)%1960+1960)%1960-20;
+    const beam=clamp(1.15-x/760)*clamp(1.2-y/1700);        // brighter near the window side
+    const tw=0.6+0.4*Math.sin(t*2.1*m.f+m.ph*3);
+    const a=m.a*beam*tw*strength;
+    if(a<0.01) continue;
+    const rad=m.s*3;
+    const grd=g.createRadialGradient(x,y,0,x,y,rad);
+    grd.addColorStop(0,`rgba(255,246,226,${a})`); grd.addColorStop(1,'rgba(255,246,226,0)');
+    g.fillStyle=grd; g.beginPath(); g.arc(x,y,rad,0,6.283); g.fill();
+  }
+}
+
+const fx = (el, v, blur) => { el.style.filter = blur>0.05 ? `blur(${blur.toFixed(2)}px)` : 'none'; };
 
 function render(t){
-  /* ---- camera ---- */
+  /* ---- camera (perspective tilt + push/pull) ---- */
   const c = camera(t);
-  const world = $('world');
-  world.style.transform = `translate(${540-c.x*c.z}px,${960-c.y*c.z}px) scale(${c.z})`;
-  const endBlur = 10*eIO(prog(t,10.0,12.2));
-  const panBlur = 2.2*Math.sin(Math.PI*prog(t,6.0,7.05));
-  world.style.filter = `blur(${(endBlur+panBlur).toFixed(2)}px)`;
-  $('calm').style.opacity = (0.42*eIO(prog(t,10.0,12.2))).toFixed(3);
+  $('world').style.transform =
+    `translate(540px,960px) perspective(1750px) rotateX(${c.tilt.toFixed(3)}deg) rotateZ(${c.roll.toFixed(3)}deg) scale(${c.z.toFixed(5)}) translate(${(-c.x).toFixed(2)}px,${(-c.y).toFixed(2)}px)`;
 
-  /* ---- static props with depth of field ---- */
-  const dof1 = 4.5*(1-eIO(prog(t,2.9,4.2)));          // macro shot
-  const dof3 = 3.2*eIO(prog(t,6.3,7.2));               // focus on tablet
-  const propBlur = (dof1+dof3).toFixed(2);
-  place($('statement'),300,1000,-8);
-  $('statement').style.filter=`blur(${propBlur}px)`;
-  place($('glasses'),805,705,14);
-  $('glasses').style.filter=`blur(${propBlur}px)`;
-  place($('pen'),815,1395,-32);
-  $('pen').style.filter=`blur(${propBlur}px)`;
-  place($('calc'),540,1150,0);
-  $('calc').style.filter=`blur(${dof3.toFixed(2)}px)`;
-  place($('tablet'),1500,1100,-3);
+  /* ---- depth of field: tilt-shift blur bands + focus pulls ---- */
+  const dofTop = [[0,15],[3.8,14],[5.4,7],[7.9,7],[9.0,9],[10.9,9],[12.4,2.5],[15,2.5]];
+  const dofBot = [[0,11],[3.8,10],[5.4,5],[7.9,5],[9.0,6],[10.9,6],[12.4,1.5],[15,1.5]];
+  const kv = (keys) => { for(let i=1;i<keys.length;i++){ if(t<=keys[i][0]) return lerp(keys[i-1][1],keys[i][1],eIO(prog(t,keys[i-1][0],keys[i][0]))); } return keys[keys.length-1][1]; };
+  $('dofT').style.backdropFilter = `blur(${kv(dofTop).toFixed(2)}px)`;
+  $('dofB').style.backdropFilter = `blur(${kv(dofBot).toFixed(2)}px)`;
 
-  /* = key press synced with click */
-  const press = Math.sin(Math.PI*prog(t,0.06,0.26));
-  $('eq').style.transform=`translateY(${(4*press).toFixed(2)}px) scale(${(1-0.05*press).toFixed(3)})`;
+  const focusTablet = eIO(prog(t,8.1,9.0)) * (1-eIO(prog(t,11.0,12.2)));   // scene 3: everything but the tablet softens
+  const macro = 1-eIO(prog(t,3.7,5.0));                                     // scene 1: neighbours out of focus
 
-  /* ---- documents slide in ---- */
+  for(const [id,[x,y,r]] of Object.entries(PROPS)) place($(id),x,y,r);
+  fx($('report'),  0, 3.6*focusTablet);
+  fx($('calc'),    0, 6*macro + 3.2*focusTablet);
+  fx($('glasses'), 0, 3.2*focusTablet);
+  fx($('pen'),     0, 2.4*focusTablet);
+  fx($('cup'),     0, 3.2*focusTablet);
+  fx($('tablet'),  0, 0);
+
+  /* ---- documents glide in: controlled, editorial ---- */
   for(const d of DOCS){
-    const el=$(d.el), p=eOut(prog(t,d.t,d.t+0.7));
+    const el=$(d.el), p=eOut(prog(t,d.t,d.t+1.05));
     el.style.visibility = t<d.t ? 'hidden':'visible';
     place(el, d.x+d.dx*(1-p), d.y+d.dy*(1-p), d.r+d.dr*(1-p));
-    el.style.filter=`blur(${dof3.toFixed(2)}px)`;
+    fx(el, 0, 3.4*focusTablet);
   }
 
-  /* ---- question mark: blur -> sharp ---- */
-  const q = prog(t,6.6,8.1);
-  $('qm').style.opacity = eOut(prog(t,6.6,7.0)).toFixed(3);
-  $('qm').style.filter = `blur(${(16*(1-eIO(q))).toFixed(2)}px)`;
+  /* ---- highlighter sweep over the figure (right to left) ---- */
+  $('hl').style.transform = `scaleX(${eOut(prog(t,0.55,1.35)).toFixed(4)})`;
 
-  /* ---- text backing band (negative space behind text) ---- */
-  const bandIn  = eOut(prog(t,0.10,0.5));
-  const bandOut = 1-eOut(prog(t,9.75,10.3));
-  $('band').style.opacity = (bandIn*bandOut).toFixed(3);
-  $('band4').style.opacity = eOut(prog(t,10.2,11.0)).toFixed(3);
+  /* ---- calculator '=' key nudge with the opening click ---- */
+  const press = Math.sin(Math.PI*prog(t,0.30,0.48));
+  $('eq').style.transform=`translate(${(2*press).toFixed(2)}px,${(4*press).toFixed(2)}px)`;
 
-  /* ---- T1: scale 90% -> 100% + short fade ---- */
-  {
-    const pin=eOut(prog(t,0.20,0.55)), pout=eIO(prog(t,2.85,3.20));
-    const el=$('t1');
-    el.style.opacity=(pin*(1-pout)).toFixed(3);
-    el.style.transform=`scale(${(0.9+0.1*pin).toFixed(4)})`;
-  }
+  /* ---- tablet: empty field with caret -> luminous question mark ---- */
+  const caretOn = t>8.15 && t<8.95 && (Math.floor((t-8.15)/0.27)%2===0);
+  $('caret').style.opacity = caretOn ? 0.9 : 0;
+  const q = prog(t,8.85,9.75);
+  $('qm').style.opacity = eOut(prog(t,8.85,9.15)).toFixed(3);
+  $('qm').style.filter = `blur(${(18*(1-eIO(q))).toFixed(2)}px)`;
+  const glow = Math.sin(Math.PI*prog(t,9.45,10.6));
+  $('qm').style.textShadow = `0 0 ${(18+40*glow).toFixed(1)}px rgba(200,224,250,${(0.25+0.6*glow).toFixed(3)})`;
+  $('field').style.borderColor = `rgba(255,255,255,${(0.5-0.32*eIO(q)).toFixed(3)})`;
 
-  /* ---- T2: enters from the right, 'לא' pulses to 110% once ---- */
-  {
-    const pin=eOut(prog(t,3.35,3.95)), pout=eIO(prog(t,5.75,6.05));
-    const el=$('t2');
-    el.style.opacity=(pin*(1-pout)).toFixed(3);
-    el.style.transform=`translateX(${(220*(1-pin)).toFixed(2)}px)`;
-    const pulse=Math.sin(Math.PI*prog(t,4.15,4.70));
-    $('t2no').style.transform=`scale(${(1+0.10*pulse).toFixed(4)})`;
-  }
+  /* ---- light: soft at first, a touch more complex in scene 2, warm and calm at the end ---- */
+  const complexity = eIO(prog(t,4.2,5.6))*(1-eIO(prog(t,10.8,12.4)));
+  const resolve = eIO(prog(t,11.0,12.8));
+  $('sun').style.opacity = (1-0.38*complexity+0.10*resolve).toFixed(3);
+  $('cool').style.opacity = (0.16*complexity).toFixed(3);
+  $('warm').style.opacity = (0.20+0.22*resolve-0.12*complexity).toFixed(3);
+  drawDust(t, 1-0.6*complexity-0.3*focusTablet);
 
-  /* ---- T3: word-by-word reveal, right to left; underline under 'באמת' ---- */
-  {
-    const words=$('t3').querySelectorAll('.w');
-    const pout=eIO(prog(t,9.75,10.05));
+  /* ---- text backing (negative space behind copy) ---- */
+  $('band').style.opacity = (0.62*eOut(prog(t,0.25,0.8))*(1-eOut(prog(t,10.75,11.2)))).toFixed(3);
+  $('band4').style.opacity = (0.82*eOut(prog(t,11.2,12.1))).toFixed(3);
+
+  /* ---- T1 (0–4s): soft fade-in + slight scale-up ---- */
+  { const pin=eOut(prog(t,0.35,1.15)), pout=eIO(prog(t,3.55,4.0));
+    $('t1').style.opacity=(pin*(1-pout)).toFixed(3);
+    $('t1').style.transform=`scale(${(0.94+0.06*pin).toFixed(4)})`; }
+
+  /* ---- T2 (4–8s): enters right-to-left with a fade; 'לא' pulses gently ---- */
+  { const pin=eOut(prog(t,4.35,5.1)), pout=eIO(prog(t,7.55,7.95));
+    $('t2').style.opacity=(pin*(1-pout)).toFixed(3);
+    $('t2').style.transform=`translateX(${(-120*(1-pin)).toFixed(2)}px)`;
+    const pulse=Math.sin(Math.PI*prog(t,5.35,6.0));
+    $('t2no').style.transform=`scale(${(1+0.08*pulse).toFixed(4)})`; }
+
+  /* ---- T3 (8–11s): word-by-word reveal right-to-left, underline sweep under 'באמת' ---- */
+  { const words=$('t3').querySelectorAll('.w');
+    const pout=eIO(prog(t,10.7,11.05));
     words.forEach((w,i)=>{
-      const p=eOut(prog(t,6.75+i*0.22,6.75+i*0.22+0.45));
+      const p=eOut(prog(t,8.25+i*0.24,8.25+i*0.24+0.5));
       w.style.opacity=(p*(1-pout)).toFixed(3);
-      w.style.transform=`translateY(${(30*(1-p)).toFixed(2)}px)`;
+      w.style.transform=`translateY(${(28*(1-p)).toFixed(2)}px)`;
     });
-    document.querySelector('#t3 .ul').style.transform=`scaleX(${eIO(prog(t,8.0,8.55)).toFixed(4)})`;
-  }
+    document.querySelector('#t3 .ul').style.transform=`scaleX(${eIO(prog(t,9.35,9.95)).toFixed(4)})`; }
 
-  /* ---- T4: two lines, fade-and-rise, 0.7s apart, then fully static ---- */
-  {
-    const a=eOut(prog(t,10.55,11.20)), b=eOut(prog(t,11.25,11.90));
-    $('t4a').style.opacity=a.toFixed(3);
-    $('t4a').style.transform=`translateY(${(40*(1-a)).toFixed(2)}px)`;
-    $('t4b').style.opacity=b.toFixed(3);
-    $('t4b').style.transform=`translateY(${(40*(1-b)).toFixed(2)}px)`;
-  }
+  /* ---- T4 (11–15s): fade-and-rise, then fully static; 'נטו' brightens slightly ---- */
+  { const a=eOut(prog(t,11.55,12.45));
+    $('t4').style.opacity=a.toFixed(3);
+    $('t4').style.transform=`translateY(${(46*(1-a)).toFixed(2)}px)`;
+    const acc=eIO(prog(t,12.3,12.9));
+    $('net').style.filter=`brightness(${(1+0.22*acc).toFixed(3)})`; }
 }
 window.render = render;
-window.addEventListener('load',()=>render(0));
+window.sceneReady = new Promise(res => {
+  const img=$('oak'); img.onload=()=>{ render(0); res(); }; img.src=makeOak();
+});
 </script>
 </body>
 </html>
