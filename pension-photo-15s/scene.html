@@ -44,7 +44,7 @@ canvas{position:absolute;inset:0;width:1080px;height:1920px;pointer-events:none}
   <div class="shot" id="s3"><img src="images/s3-tablet.webp" alt="">
     <div class="fx" id="qglow"></div>
   </div>
-  <div class="shot" id="s4"><img src="images/s4-final.webp" alt=""></div>
+  <div class="shot" id="s4"><img src="images/s4-final-fixed.png" alt=""></div>
 
   <div id="sunbreath"></div>
   <div id="leak"></div>
@@ -64,49 +64,54 @@ const eOut = p => 1-Math.pow(1-p,3);
 const eIO = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
 function rng(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
 
-/* shots: cut point (in), next cut (out), camera move (scale, focal point %, drift px), ease.
-   Text is baked into the photos, so cuts never cross-fade two legible frames:
-   the outgoing shot blurs until its copy is unreadable, then the next one resolves from the blur. */
-const T = 0.32, MAXBLUR = 26;
+/* shots: cut point (in), next cut (out), camera move (scale, focal point %, drift px).
+   Text is baked into the photos, so two legible frames are never mixed: the dissolve happens
+   only while both shots are deep in blur. A shared push-in carries momentum through each cut. */
+const T = 0.6, MAXBLUR = 22, PUSH = 0.07, XH = 0.18;
 const SHOTS = [
-  {id:'s1', cin:0.0,  cout:4.0,  s:[1.00,1.085], o:[68,66], dx:[0,-6],  dy:[0,-4], ease:eSine},   // push-in on 12,000
-  {id:'s2', cin:4.0,  cout:8.0,  s:[1.10,1.035], o:[50,52], dx:[14,-14],dy:[0,0],  ease:eSine},   // widen + slow lateral
-  {id:'s3', cin:8.0,  cout:11.0, s:[1.02,1.10],  o:[66,62], dx:[10,0],  dy:[8,0],  ease:eSine},   // glide in to the tablet
-  {id:'s4', cin:11.0, cout:99,   s:[1.10,1.00],  o:[50,42], dx:[0,0],   dy:[-10,0],ease:t=>eOut(clamp(t*1.25))}, // pull back, settle, hold
+  {id:'s1', cin:0.0,  cout:4.0,  s:[1.00,1.07],  o:[68,66], dx:[0,-6],  dy:[0,-4]},   // push-in on 12,000
+  {id:'s2', cin:4.0,  cout:8.0,  s:[1.08,1.035], o:[50,52], dx:[12,-12],dy:[0,0]},    // widen + slow lateral
+  {id:'s3', cin:8.0,  cout:11.0, s:[1.02,1.08],  o:[66,62], dx:[8,0],   dy:[6,0]},    // glide in to the tablet
+  {id:'s4', cin:11.0, cout:99,   s:[1.09,1.00],  o:[50,42], dx:[0,0],   dy:[-10,0], settle:true}, // pull back, settle, hold
 ];
+const eInQ = p => p*p*p, eOutQ = p => 1-Math.pow(1-p,3);
+// mostly linear so the camera never stops dead at a cut; sine adds a soft start/finish
+const glide = p => 0.65*p + 0.35*eSine(p);
 
 function shot(t, sh, idx){
   const el=$(sh.id);
   const first = idx===0, last = idx===SHOTS.length-1;
-  const t0 = first ? 0 : sh.cin-0.05, t1 = last ? 15 : sh.cout+T;
+  const t0 = first ? 0 : sh.cin-XH-0.02, t1 = last ? 15 : sh.cout+XH+0.02;
   if(t<t0 || t>t1){ el.style.opacity=0; return; }
-  const p = sh.ease(prog(t, first?0:sh.cin-T, last?15:sh.cout+T));
-  const s = lerp(sh.s[0],sh.s[1],p);
+  const a0 = first ? 0 : sh.cin-T, a1 = last ? 15 : sh.cout+T;
+  const p = sh.settle ? eOut(clamp(prog(t,a0,a1)*1.25)) : glide(prog(t,a0,a1));
+  // push-in through the cut: outgoing accelerates in, incoming continues and eases out
+  const pushOut = last  ? 0 : PUSH*eInQ(prog(t, sh.cout-T, sh.cout+XH));
+  const pushIn  = first ? 0 : PUSH*(1-eOutQ(prog(t, sh.cin-XH, sh.cin+T)));
+  const s = lerp(sh.s[0],sh.s[1],p) * (1+pushOut+pushIn);
   const dx = lerp(sh.dx[0],sh.dx[1],p), dy = lerp(sh.dy[0],sh.dy[1],p);
-  // micro float, like a slider on a long lens
-  const fx = 1.6*Math.sin(t*0.9+sh.cin), fy = 1.2*Math.sin(t*0.7+sh.cin*2);
+  const fx = 1.4*Math.sin(t*0.8+sh.cin), fy = 1.0*Math.sin(t*0.6+sh.cin*2);   // slider float
   el.style.transformOrigin = `${sh.o[0]}% ${sh.o[1]}%`;
   el.style.transform = `translate(${(dx+fx).toFixed(2)}px,${(dy+fy).toFixed(2)}px) scale(${s.toFixed(5)})`;
-  const opIn   = first ? 1 : eIO(prog(t, sh.cin-0.04, sh.cin+0.22));
+  const opIn   = first ? 1 : eIO(prog(t, sh.cin-XH, sh.cin+XH));
   const blurIn = first ? 0 : MAXBLUR*(1-eIO(prog(t, sh.cin, sh.cin+T)));
   const blurOut= last  ? 0 : MAXBLUR*eIO(prog(t, sh.cout-T, sh.cout));
   const blur = Math.max(blurIn, blurOut);
-  const bright = 1 + 0.12*(blur/MAXBLUR);
   el.style.opacity = opIn.toFixed(4);
   el.style.zIndex = idx+1;
-  el.style.filter = (blur>0.05 ? `blur(${blur.toFixed(2)}px) ` : '') + `brightness(${bright.toFixed(3)})`;
+  el.style.filter = (blur>0.05 ? `blur(${blur.toFixed(2)}px) ` : '') + `brightness(${(1+0.06*blur/MAXBLUR).toFixed(3)})`;
 }
 
-/* warm light leak sweeping across each transition */
+/* soft warm glow drifting across each transition */
 function leak(t){
   let a=0, x=50;
   for(const tc of [4.0,8.0,11.0]){
-    const p=prog(t,tc-0.4,tc+0.4);
-    if(p>0 && p<1){ a=Math.sin(Math.PI*p)*0.55; x=lerp(-10,85,eSine(p)); }
+    const p=prog(t,tc-0.65,tc+0.65);
+    if(p>0 && p<1){ a=Math.pow(Math.sin(Math.PI*p),2)*0.32; x=lerp(5,75,eSine(p)); }
   }
   const el=$('leak');
   el.style.opacity=a.toFixed(3);
-  el.style.background=`radial-gradient(900px 1500px at ${x}% 30%,rgba(255,206,140,.75),rgba(255,180,110,.25) 45%,rgba(255,180,110,0) 75%)`;
+  el.style.background=`radial-gradient(1000px 1600px at ${x}% 32%,rgba(255,210,150,.7),rgba(255,190,120,.22) 50%,rgba(255,190,120,0) 80%)`;
 }
 
 /* dust motes drifting in the window light (upper-left) */
